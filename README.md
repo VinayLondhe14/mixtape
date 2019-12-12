@@ -19,4 +19,62 @@ See the `Dockerfile` and `run.sh` script for more details
 
 The other way is to run the app directly through main like so `./gradlew run --args='mixtape.json changes.json output.json'`. If using this method, the application assumes that `mixtape.json` and `changes.json` are at the same directory level as the application i.e. if this app is at `Workspace/mixtape`, the json files should be located at `Workspace/mixtape.json` and `Workspace/changes.json`. The output file will also be created at `Workspace/output.json`
 
+# changes.json format
+
+The changes file should be a JSON file. It contains arrays with a key for each operation `add_song`, `add_playlist` and `remove_playlist`. 
+
+For eg:
+```
+{
+  "add_song" : [
+    {
+      "playlist_id" : "2",
+      "song_id" : "25"
+    },
+    {
+      "playlist_id" : "3",
+      "song_id" : "24"
+    }
+ ],
+ "add_playlist" : [
+    {
+      "playlist_id" : "12",
+      "user_id" : "2",
+      "song_ids" : [
+        "8",
+        "32"
+      ]
+    }
+ ],
+ "remove_playlist": [
+    {
+      "playlist_id" : "3"
+    }
+  ]
+}  
+```
+
+This example changes file does the following:
+1) adds songs with ids 25 and 24 to playlists with ids 2 and 3 respectively
+2) adds playlist with id 12 for user_id 2 containing songs with ids 8 and 32
+3) removes playlist with id 3
+
+An example changes file is located at https://github.com/VinayLondhe14/mixtape/blob/master/local/data/changes.json
+
+# Assumptions
+
+1) All ids are inputted as strings
+2) If playlist_id is not set while adding a playlist, then the playlist is created with a random UUID
+3) All operations are done using the respective ids
+4) If the changes file is invalid, then no changes are applied. This decision was taken so that it is easier to reason about failures
+5) 
+
+
 # How to scale the application to deal with large input and/or change files
+
+If we are dealing with large files, then we cannot load them up in memory since we will run out of memory. 
+
+I can see a couple of solutions to this problem
+One of the solutions is to stream the mixtape file(as opposed to loading it directly in memory) and create users, playlists and songs in a data store. Then do the same with the changes file and apply the changes to the relevant objects in the data store. Finally, stream all the contents of the data store back to the client. 
+
+The other way would be to create a RESTful web service instead and expose endpoints to add songs and add/remove playlists. Then instead of dealing with json files, the client can directly make PUT/POST requests against the web service. 
