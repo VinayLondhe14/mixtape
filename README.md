@@ -67,6 +67,7 @@ An example changes file is located at https://github.com/VinayLondhe14/mixtape/b
 2) If playlist_id is not set while adding a playlist, then the playlist is created with a random UUID
 3) All operations are done using the respective ids
 4) If the changes file is invalid, then no changes are applied and an IllegalArgumentException is thrown with all the violations. This decision was taken so that it is easier to reason about failures
+5) If the application fails to read or write the JSON files, an exception will be directly thrown to the client
 
 # When is the changes file invalid?
 
