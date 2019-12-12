@@ -13,11 +13,11 @@ If you want to run the app through a docker container, please use the following 
 
 See the `Dockerfile` and `run.sh` script for more details
 
-**NOTE**: If this method is used, the application assumes that `mixtape.json` and `changes.json` are located in the directory `local/data` inside the project. See https://github.com/VinayLondhe14/mixtape/tree/master/local/data. The `output.json` will also be created in the `local/data` directory 
+**NOTE**: If this method is used, the application assumes that `mixtape.json` and `changes.json` are located in the directory `local/data` inside the project. We already have the 2 files there. See https://github.com/VinayLondhe14/mixtape/tree/master/local/data. Feel free to update them as necessary. The `output.json` will also be created in the `local/data` directory. 
 
 ## Running directly through main
 
-The other way is to run the app directly through main like so `./gradlew run --args='mixtape.json changes.json output.json'`. If using this method, the application assumes that `mixtape.json` and `changes.json` are at the same directory level as the application i.e. if this app is at `Workspace/mixtape`, the json files should be located at `Workspace/mixtape.json` and `Workspace/changes.json`. The output file will also be created at `Workspace/output.json`
+The other way is to run the app directly through main like so `./gradlew run --args='mixtape.json changes.json output.json'`. If using this method, the application assumes that `mixtape.json` and `changes.json` are at the same directory level as the application i.e. if this app is at `Workspace/mixtape`, the json files should be located at `Workspace/mixtape.json` and `Workspace/changes.json`. The output file will also be created at `Workspace/output.json`. **This method assumes Java is installed on your system**
 
 # changes.json format
 
