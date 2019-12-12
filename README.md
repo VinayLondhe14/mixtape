@@ -2,7 +2,7 @@
 
 # How to build and run the app
 
-mixtape is a Java based app using the Gradle package manager. Currently, there are 2 ways to run it
+mixtape is a Java+Gradle based app. Currently, there are 2 ways to run it
 
 ## Running using docker
 
@@ -61,20 +61,44 @@ This example changes file does the following:
 
 An example changes file is located at https://github.com/VinayLondhe14/mixtape/blob/master/local/data/changes.json
 
-# Assumptions
+# Assumptions and Working Behavior
 
-1) All ids are inputted as strings
+1) All ids are strings
 2) If playlist_id is not set while adding a playlist, then the playlist is created with a random UUID
 3) All operations are done using the respective ids
-4) If the changes file is invalid, then no changes are applied. This decision was taken so that it is easier to reason about failures
-5) 
+4) If the changes file is invalid, then no changes are applied and an IllegalArgumentException is thrown with all the violations. This decision was taken so that it is easier to reason about failures
 
+# When is the changes file invalid?
+
+The changes file is invalid if any of the following is true:
+
+**For an `add_song` call**
+1) song_id is empty
+2) playlist_id is empty
+3) song_id does not exist in the mixtape file
+4) playlist_id does not exist in the mixtape file
+5) song_id already exists in the songIds array of the playlist in which we want the songId added
+
+**For an `add_playlist` call**
+1) playlist_id already exists in the mixtape.json file
+2) user_id is empty
+3) user_id does not exist in the mixtape file
+4) song_ids is not null or empty
+5) song_ids has duplicate songs
+6) all songs in song_ids exist in the mixtape file
+
+**For a `remove_playlist` call**
+1) playlist_id is empty
+2) playlist_id does not exist in the mixtape file
+
+Take a look at https://github.com/VinayLondhe14/mixtape/blob/master/src/main/java/com/coding/exercise/ChangesValidator.java for more details
 
 # How to scale the application to deal with large input and/or change files
 
 If we are dealing with large files, then we cannot load them up in memory since we will run out of memory. 
 
 I can see a couple of solutions to this problem
-One of the solutions is to stream the mixtape file(as opposed to loading it directly in memory) and create users, playlists and songs in a data store. Then do the same with the changes file and apply the changes to the relevant objects in the data store. Finally, stream all the contents of the data store back to the client. 
 
-The other way would be to create a RESTful web service instead and expose endpoints to add songs and add/remove playlists. Then instead of dealing with json files, the client can directly make PUT/POST requests against the web service. 
+1) One of the solutions is to stream the mixtape file(as opposed to loading it directly in memory) and create users, playlists and songs in a data store. Then do the same with the changes file and apply the changes to the relevant objects in the data store. Finally, stream all the contents of the data store back to the client. 
+
+2) The other way would be to create a RESTful web service instead and expose endpoints to add songs and add/remove playlists. Then instead of dealing with json files, the client can directly make PUT/POST requests against the web service. 
