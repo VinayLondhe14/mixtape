@@ -1,21 +1,18 @@
-package com.coding.exercise.data.changes;
+package com.coding.exercise.data;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+/**
+ * POJO for JSON mapping of remove_playlist changes
+ */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class AddSong
+public class RemovePlaylist
 {
-    private String songId;
     private String playlistId;
 
-    public AddSong()
+    public RemovePlaylist()
     {
-    }
-
-    public String getSongId()
-    {
-        return songId;
     }
 
     public String getPlaylistId()

@@ -4,9 +4,9 @@ import com.coding.exercise.data.Output;
 import com.coding.exercise.data.Playlist;
 import com.coding.exercise.data.Song;
 import com.coding.exercise.data.User;
-import com.coding.exercise.data.changes.AddPlaylist;
-import com.coding.exercise.data.changes.AddSong;
-import com.coding.exercise.data.changes.RemovePlaylist;
+import com.coding.exercise.data.AddPlaylist;
+import com.coding.exercise.data.AddSong;
+import com.coding.exercise.data.RemovePlaylist;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -74,7 +74,7 @@ class JsonFileReaderWriter
 
     void writeOutput(Output output) throws Exception
     {
-        mapper.writeValue(new File(outputFile), output);
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(outputFile), output);
     }
 
     private String readFile(String filename) throws Exception

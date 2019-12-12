@@ -3,9 +3,9 @@ package com.coding.exercise;
 import com.coding.exercise.data.Playlist;
 import com.coding.exercise.data.Song;
 import com.coding.exercise.data.User;
-import com.coding.exercise.data.changes.AddPlaylist;
-import com.coding.exercise.data.changes.AddSong;
-import com.coding.exercise.data.changes.RemovePlaylist;
+import com.coding.exercise.data.AddPlaylist;
+import com.coding.exercise.data.AddSong;
+import com.coding.exercise.data.RemovePlaylist;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
@@ -13,13 +13,26 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Responsible for validating changes file.
+ */
 class ChangesValidator
 {
     private static final Set<String> errors = new HashSet<>();
 
+    /**
+     * Calls appropriate methods to validate the changes. Returns an empty set if changes are valid. Otherwise throws an IllegalArgumentException with all the violations
+     * @param users
+     * @param playlists
+     * @param songs
+     * @param songsToAdd
+     * @param playlistsToAdd
+     * @param playlistsToRemove
+     */
     static void validateChanges(List<User> users, List<Playlist> playlists, List<Song> songs,
         List<AddSong> songsToAdd, List<AddPlaylist> playlistsToAdd, List<RemovePlaylist> playlistsToRemove)
     {
+        // Sets of userIds, playlistIds and songIds so that we can easily locate them when needed for validations
         Set<String> userIds = users.stream().map(User::getId).collect(Collectors.toSet());
         Set<String> playlistIds = playlists.stream().map(Playlist::getId).collect(Collectors.toSet());
         Set<String> songIds = songs.stream().map(Song::getId).collect(Collectors.toSet());
@@ -34,6 +47,18 @@ class ChangesValidator
         }
     }
 
+    /**
+     * Iterates over songsToAdd and validates the following
+     * 1) songToAdd does not have an empty songId
+     * 2) songToAdd does not have an empty playlistId
+     * 3) songToAdd has songId which already exists
+     * 4) songToAdd has playlistId which already exists
+     * 5) songToAdd does not add a songId which already exists in playlist's songIds
+     * @param songsToAdd
+     * @param songIds
+     * @param playlistIds
+     * @param playlists
+     */
     private static void validateSongsToAdd(List<AddSong> songsToAdd, Set<String> songIds, Set<String> playlistIds, List<Playlist> playlists)
     {
         for(AddSong songToAdd : songsToAdd)
@@ -74,6 +99,20 @@ class ChangesValidator
         }
     }
 
+    /**
+     * Iterates over playlistsToAdd and validates the following
+     * 1) playlistToAdd has a unique playlistId if it it set
+     * 2) playlistToAdd does not have an empty userId
+     * 3) playlistToAdd has userId which already exists
+     * 4) playlistToAdd does not have null or empty songIds
+     * 5) playlistToAdd does not have duplicate songIds
+     * 6) playlistToAdd does not have empty song in songIds
+     * 7) playListToAdd has song in songIds which already exists
+     * @param playlistsToAdd
+     * @param userIds
+     * @param songIds
+     * @param playlistIds
+     */
     private static void validatePlaylistsToAdd(List<AddPlaylist> playlistsToAdd, Set<String> userIds, Set<String> songIds, Set<String> playlistIds)
     {
         for(AddPlaylist playlistToAdd : playlistsToAdd)
@@ -123,6 +162,13 @@ class ChangesValidator
         }
     }
 
+    /**
+     * Iterates over playlistsToRemove and validates the following
+     * 1) playlistToRemove does not have an empty playlistId
+     * 2) playlistToRemove has playlistId which already exists
+     * @param playlistsToRemove
+     * @param playlistIds
+     */
     private static void validatePlaylistsToRemove(List<RemovePlaylist> playlistsToRemove, Set<String> playlistIds)
     {
         for(RemovePlaylist playlistToRemove : playlistsToRemove)

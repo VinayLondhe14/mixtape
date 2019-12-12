@@ -1,5 +1,8 @@
 package com.coding.exercise.data;
 
+/**
+ * POJO for JSON mapping of input songs
+ */
 public class Song
 {
     private String id;

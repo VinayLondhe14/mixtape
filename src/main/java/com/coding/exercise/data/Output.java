@@ -2,6 +2,9 @@ package com.coding.exercise.data;
 
 import java.util.List;
 
+/**
+ * POJO for writing JSON output
+ */
 public class Output
 {
     private List<User> users;

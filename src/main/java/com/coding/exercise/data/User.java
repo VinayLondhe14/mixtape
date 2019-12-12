@@ -1,5 +1,8 @@
 package com.coding.exercise.data;
 
+/**
+ * POJO for JSON mapping of input users
+ */
 public class User
 {
     private String id;

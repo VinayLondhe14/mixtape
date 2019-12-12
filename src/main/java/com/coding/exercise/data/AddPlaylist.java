@@ -1,10 +1,13 @@
-package com.coding.exercise.data.changes;
+package com.coding.exercise.data;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.List;
 
+/**
+ * POJO for JSON mapping of add_playlist changes
+ */
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class AddPlaylist
 {
