@@ -1,0 +1,1 @@
+java -Done-jar.silent=true -jar /mixtape-service.jar

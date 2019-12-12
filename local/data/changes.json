@@ -1,0 +1,50 @@
+{
+  "add_song" : [
+    {
+      "playlist_id" : "2",
+      "song_id" : "25"
+    },
+    {
+      "playlist_id" : "2",
+      "song_id" : "24"
+    },
+    {
+      "playlist_id" : "3",
+      "song_id" : "19"
+    }
+  ],
+  "add_playlist" : [
+    {
+      "playlist_id" : "12",
+      "user_id" : "2",
+      "song_ids" : [
+        "8",
+        "32"
+      ]
+    },
+    {
+      "user_id" : "3",
+      "song_ids" : [
+        "6",
+        "8",
+        "11"
+      ]
+    },
+    {
+      "playlist_id" : "23",
+      "user_id" : "7",
+      "song_ids" : [
+        "7",
+        "12",
+        "13",
+        "16",
+        "2"
+      ]
+    }
+  ],
+  "remove_playlist": [
+    {
+      "playlist_id" : "3"
+    }
+  ]
+}

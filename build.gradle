@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.onslip.gradle-one-jar" version "1.0.5"
 }
 
 group 'com.coding.exercise'
@@ -15,3 +16,23 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:2.10.1"
     compile "org.apache.commons:commons-lang3:3.9"
 }
+
+// make it a runnable thing
+task makeJar(type: OneJar, dependsOn: build) {
+    mainClass = 'com.coding.exercise.MixtapeApplication'
+    archiveName = "mixtape-service.jar"
+}
+
+// dockerize
+task makeImage(dependsOn: makeJar) {
+    doLast {
+        exec {
+            commandLine "docker", "build", "-t", "mixtape:$project.version",
+                "--label", "service=mixtape",
+                "--label", "serviceVersion=$project.version",
+                "."
+        }
+    }
+}
+
+defaultTasks("makeImage")

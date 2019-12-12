@@ -19,7 +19,8 @@ public class MixtapeApplication
             throw new IllegalArgumentException("3 arguments (mixtape.json, changes,json and output.json) must be passed in to the application");
         }
 
-        String inputFileLocation = System.getProperty("user.dir") + "/../";
+        //String inputFileLocation = System.getProperty("user.dir") + "/../";
+        String inputFileLocation = "/app/data/";
         JsonFileReaderWriter jsonReaderWriter = new JsonFileReaderWriter(inputFileLocation + args[0], inputFileLocation + args[1], inputFileLocation + args[2]);
 
         List<User> users = jsonReaderWriter.readUsers();
