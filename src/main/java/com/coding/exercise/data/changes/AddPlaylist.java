@@ -1,10 +1,14 @@
 package com.coding.exercise.data.changes;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import java.util.List;
 
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class AddPlaylist
 {
-    private String id;
+    private String playlistId;
     private String userId;
     private List<String> songIds;
 
@@ -12,21 +16,9 @@ public class AddPlaylist
     {
     }
 
-    public AddPlaylist(String id, String userId, List<String> songIds)
+    public String getPlaylistId()
     {
-        this.id = id;
-        this.userId = userId;
-        this.songIds = songIds;
-    }
-
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId(String id)
-    {
-        this.id = id;
+        return playlistId;
     }
 
     public String getUserId()
@@ -34,18 +26,8 @@ public class AddPlaylist
         return userId;
     }
 
-    public void setUserId(String userId)
-    {
-        this.userId = userId;
-    }
-
     public List<String> getSongIds()
     {
         return songIds;
-    }
-
-    public void setSongIds(List<String> songIds)
-    {
-        this.songIds = songIds;
     }
 }

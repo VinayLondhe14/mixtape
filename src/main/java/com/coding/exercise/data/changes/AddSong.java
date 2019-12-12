@@ -13,29 +13,13 @@ public class AddSong
     {
     }
 
-    public AddSong(String songId, String playlistId)
-    {
-        this.songId = songId;
-        this.playlistId = playlistId;
-    }
-
     public String getSongId()
     {
         return songId;
     }
 
-    public void setSongId(String songId)
-    {
-        this.songId = songId;
-    }
-
     public String getPlaylistId()
     {
         return playlistId;
-    }
-
-    public void setPlaylistId(String playlistId)
-    {
-        this.playlistId = playlistId;
     }
 }

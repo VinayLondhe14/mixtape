@@ -4,45 +4,38 @@ import com.coding.exercise.data.Output;
 import com.coding.exercise.data.Playlist;
 import com.coding.exercise.data.Song;
 import com.coding.exercise.data.User;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.coding.exercise.data.changes.AddPlaylist;
+import com.coding.exercise.data.changes.AddSong;
+import com.coding.exercise.data.changes.RemovePlaylist;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.util.List;
 
 public class MixtapeApplication
 {
-    private static ObjectMapper mapper = new ObjectMapper();
     public static void main(String[] args) throws Exception
     {
-        String mixTapeJson = readFile(System.getProperty("user.dir") + "/../" + args[0]);
-        JsonNode rootNode = mapper.readTree(mixTapeJson);
-        List<User> users = mapper.readerFor(new TypeReference<List<User>>() {}).readValue(rootNode.get("users"));
-        List<Playlist> playlists = mapper.readerFor(new TypeReference<List<Playlist>>() {}).readValue(rootNode.get("playlists"));
-        List<Song> songs = mapper.readerFor(new TypeReference<List<Song>>() {}).readValue(rootNode.get("songs"));
-
-        mapper.writeValue(new File(System.getProperty("user.dir") + "/../" + args[1]), new Output(users, playlists, songs));
-
-        System.out.println(users.toString());
-    }
-
-    public static String readFile(String filename) {
-        String result = "";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(filename));
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-            while (line != null) {
-                sb.append(line);
-                line = br.readLine();
-            }
-            result = sb.toString();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if(args.length != 3)
+        {
+            throw new IllegalArgumentException("3 arguments (mixtape.json, changes,json and output.json) must be passed in to the application");
         }
-        return result;
+
+        String inputFileLocation = System.getProperty("user.dir") + "/../";
+        JsonFileReaderWriter jsonReaderWriter = new JsonFileReaderWriter(inputFileLocation + args[0], inputFileLocation + args[1], inputFileLocation + args[2]);
+
+        List<User> users = jsonReaderWriter.readUsers();
+        List<Playlist> playlists = jsonReaderWriter.readPlaylists();
+        List<Song> songs = jsonReaderWriter.readSongs();
+
+        List<AddSong> songsToAdd = jsonReaderWriter.readSongsToAdd();
+        List<AddPlaylist> playlistsToAdd = jsonReaderWriter.readPlaylistsToAdd();
+        List<RemovePlaylist> playlistsToRemove = jsonReaderWriter.readPlaylistsToRemove();
+
+        ChangesValidator.validateChanges(users, playlists, songs, songsToAdd, playlistsToAdd, playlistsToRemove);
+
+        ChangesHandler.addSongsToPlaylists(playlists, songsToAdd);
+        ChangesHandler.addPlaylists(playlists, playlistsToAdd);
+        ChangesHandler.removePlayLists(playlists, playlistsToRemove);
+
+        jsonReaderWriter.writeOutput(new Output(users, playlists, songs));
     }
 }

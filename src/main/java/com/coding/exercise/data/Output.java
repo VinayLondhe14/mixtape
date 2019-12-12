@@ -8,10 +8,6 @@ public class Output
     private List<Playlist> playlists;
     private List<Song> songs;
 
-    public Output()
-    {
-    }
-
     public Output(List<User> users, List<Playlist> playlists, List<Song> songs)
     {
         this.users = users;
